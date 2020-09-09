@@ -125,9 +125,74 @@
 
    [Java based Bean Configuration](https://github.com/jaySiddhapura-eng/basic-MVC-spring5)
 
+## XML Based Configuration
 
+1. The bean configuration resides in an XML file which is located in resources folder
 
+2. This ```configuration.xml``` contains bean definitions, which will be pull up by the spring during startup 
 
+3. In order to inform spring to obtain the bean definition from xml file ```@ImportResource``` annotation is being used on the main class
+
+4. Create a sample service interface and implementation
+
+   ~~~java
+   public interface xmlDemoService {
+       String checkXmlConfig();
+   }
+   ~~~
+
+   ~~~java
+   public class xmlDemoServiceImpl implements xmlDemoService{
+       @Override
+       public String checkXmlConfig() {
+           return "checkXmlConfig executed";
+       }
+   }
+   ~~~
+
+5. Create the configuration file ```configuration.xml``` under ```resources``` folder
+
+   ~~~xml
+   <beans xmlns="http://www.springframework.org/schema/beans"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.springframework.org/schema/beans 					http://www.springframework.org/schema/beans/spring-beans.xsd">
+   
+   
+   </beans>
+   ~~~
+
+6. Register the service between ```beans``` tag
+
+   ~~~xml
+   <bean name="xmlDemoServiceImpl" class="CGI.Application.JokeApp.Services.xmlDemoServiceImpl"/>
+   ~~~
+
+7. The name of bean can be anything, but we kept it as same as class name of service which will be use for bean creation. first letter is lowercase unlike class name
+
+8. The class path is the location of the service, informing angular where it can find the  service to create the bean
+
+9. Register the ```configuration.xml``` in main class
+
+   ~~~java
+   @SpringBootApplication
+   @ImportResource("classpath:chuck-config.xml")	// this is how you can reg. the xml config
+   public class JokeAppApplication {
+   	public static void main(String[] args) {
+   	}
+   }
+   ~~~
+
+10. Access the bean via application context 
+
+    ~~~java
+    public static void main(String[] args) {
+    	ApplicationContext cntxt = SpringApplication.run(JokeAppApplication.class, args);
+    	xmlDemoService xmlSer = (xmlDemoService) cntxt.getBean("xmlDemoServiceImpl");
+    	System.out.println(xmlSer.checkXmlConfig());
+    }
+    ~~~
+
+11. Implementation : [Link](https://github.com/jaySiddhapura-eng/basic-MVC-spring5)
 
 
 
